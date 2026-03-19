@@ -71,7 +71,7 @@ export async function POST(request: NextRequest) {
     // Add text prompt
     parts.push({ text: prompt });
 
-    // Use v1beta API for image generation
+    // Use v1beta API for image generation with Gemini models
     const response = await fetch(
       `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`,
       {
@@ -116,7 +116,7 @@ export async function POST(request: NextRequest) {
 
     if (textPart?.text) {
       return NextResponse.json({
-        error: "Model returned text instead of image. Make sure you're using an image-capable model like gemini-2.0-flash-exp.",
+        error: "Model returned text instead of image. Make sure you're using an image-capable model like gemini-2.5-flash-image.",
       }, { status: 400 });
     }
 

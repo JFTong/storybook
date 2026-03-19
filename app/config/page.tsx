@@ -18,11 +18,11 @@ import { ArrowLeft, Check, Loader2 } from "lucide-react";
 import type { GlobalConfigResponse } from "@/types";
 
 const PRESET_MODELS = [
-  { value: "gemini-2.0-flash-exp", label: "Gemini 2.0 Flash Exp (Image Generation) ⭐" },
-  { value: "gemini-3.1-flash-image-preview", label: "Gemini 3.1 Flash Image Preview" },
-  { value: "gemini-2.5-flash-image", label: "Gemini 2.5 Flash Image" },
-  { value: "imagen-4.0-generate-001", label: "Imagen 4" },
-  { value: "gemini-2.5-flash", label: "Gemini 2.5 Flash (text only)" },
+  { value: "gemini-2.5-flash-image", label: "Gemini 2.5 Flash Image (Banana) ⭐" },
+  { value: "gemini-3.1-flash-image-preview", label: "Gemini 3.1 Flash Image Preview (Banana 2)" },
+  { value: "gemini-3-pro-image-preview", label: "Gemini 3 Pro Image Preview (Banana Pro)" },
+  { value: "gemini-2.5-flash-preview-05-20", label: "Gemini 2.5 Flash Preview (text only)" },
+  { value: "gemini-2.0-flash", label: "Gemini 2.0 Flash (text only)" },
   { value: "custom", label: "Custom Model (enter below)" },
 ];
 
@@ -35,7 +35,7 @@ export default function ConfigPage() {
   // API Config
   const [apiKey, setApiKey] = useState("");
   const [hasApiKey, setHasApiKey] = useState(false);
-  const [model, setModel] = useState("gemini-2.0-flash-exp");
+  const [model, setModel] = useState("gemini-2.5-flash-image");
   const [customModel, setCustomModel] = useState("");
 
   // Feishu Config
@@ -55,7 +55,7 @@ export default function ConfigPage() {
       const data: GlobalConfigResponse = await response.json();
 
       setHasApiKey(data.hasApiKey);
-      setModel(data.model || "gemini-2.0-flash-exp");
+      setModel(data.model || "gemini-2.5-flash-image");
       setHasFeishuAppId(data.hasFeishuAppId);
       setHasFeishuAppSecret(data.hasFeishuAppSecret);
       setFeishuEnabled(data.feishuEnabled);
@@ -211,8 +211,7 @@ export default function ConfigPage() {
               )}
 
               <div className="p-3 bg-muted rounded-lg text-sm text-muted-foreground">
-                <strong>Note:</strong> For image generation, use an image-capable model like{" "}
-                <code className="bg-background px-1 rounded">gemini-2.0-flash-exp</code>.
+                <strong>Note:</strong> For image generation, use Gemini image models (Banana). For story generation, any Gemini text model works.
               </div>
             </CardContent>
           </Card>
