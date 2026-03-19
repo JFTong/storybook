@@ -1,0 +1,16 @@
+services:
+  storybook:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3101:3000"
+    volumes:
+      # Persist SQLite database
+      - storybook-data:/app/data
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped
+
+volumes:
+  storybook-data:
