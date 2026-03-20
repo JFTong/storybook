@@ -64,7 +64,7 @@ export default function DashboardPage() {
     e.preventDefault();
     e.stopPropagation();
 
-    if (!confirm("Are you sure you want to delete this project? This action cannot be undone.")) {
+    if (!confirm("确定要删除这个项目吗？此操作不可撤销。")) {
       return;
     }
 
@@ -83,10 +83,10 @@ export default function DashboardPage() {
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
+    return date.toLocaleDateString("zh-CN", {
       year: "numeric",
+      month: "long",
+      day: "numeric",
     });
   };
 
@@ -95,13 +95,13 @@ export default function DashboardPage() {
       {/* Header */}
       <header className="border-b">
         <div className="container mx-auto px-4 py-3 flex items-center justify-between">
-          <h1 className="text-xl font-bold">AI Storybook Generator</h1>
+          <h1 className="text-xl font-bold">AI 绘本生成器</h1>
           <Link
             href="/config"
             className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
           >
             <Settings className="h-4 w-4" />
-            <span>Settings</span>
+            <span>设置</span>
           </Link>
         </div>
       </header>
@@ -111,9 +111,9 @@ export default function DashboardPage() {
         <div className="max-w-4xl mx-auto space-y-8">
           {/* Hero section */}
           <div className="text-center space-y-4">
-            <h2 className="text-4xl font-bold tracking-tight">Create Children&apos;s Picture Books</h2>
+            <h2 className="text-4xl font-bold tracking-tight">创作儿童绘本</h2>
             <p className="text-muted-foreground text-lg">
-              Generate beautiful, consistent illustrations for your stories using AI
+              使用 AI 为你的故事生成精美、风格一致的插画
             </p>
           </div>
 
@@ -122,22 +122,22 @@ export default function DashboardPage() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Plus className="h-5 w-5" />
-                New Project
+                新建项目
               </CardTitle>
               <CardDescription>
-                Start creating a new picture book
+                开始创作一本新绘本
               </CardDescription>
             </CardHeader>
             <CardContent>
               <form onSubmit={handleCreateProject} className="flex gap-4">
                 <Input
-                  placeholder="Enter project title..."
+                  placeholder="输入项目名称..."
                   value={newProjectTitle}
                   onChange={(e) => setNewProjectTitle(e.target.value)}
                   className="flex-1"
                 />
                 <Button type="submit" disabled={!newProjectTitle.trim() || creating}>
-                  {creating ? "Creating..." : "Create"}
+                  {creating ? "创建中..." : "创建"}
                 </Button>
               </form>
             </CardContent>
@@ -145,17 +145,17 @@ export default function DashboardPage() {
 
           {/* Projects list */}
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold">Your Projects</h3>
+            <h3 className="text-lg font-semibold">我的项目</h3>
 
             {loading ? (
               <div className="text-center py-8 text-muted-foreground">
-                Loading projects...
+                加载项目中...
               </div>
             ) : projects.length === 0 ? (
               <Card className="border-dashed">
                 <CardContent className="py-12 text-center">
                   <FolderOpen className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-                  <p className="text-muted-foreground">No projects yet. Create your first one above!</p>
+                  <p className="text-muted-foreground">还没有项目，在上方创建第一个吧！</p>
                 </CardContent>
               </Card>
             ) : (
@@ -184,7 +184,7 @@ export default function DashboardPage() {
                         <div className="flex items-center gap-4 text-sm text-muted-foreground">
                           <div className="flex items-center gap-1">
                             <Clock className="h-3 w-3" />
-                            <span>Updated {formatDate(project.updatedAt)}</span>
+                            <span>更新于 {formatDate(project.updatedAt)}</span>
                           </div>
                         </div>
                       </CardContent>

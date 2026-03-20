@@ -20,7 +20,7 @@ import type { AgentConfig } from "@/types";
 
 const PRESET_MODELS = [
   { value: "gemini-3.1-flash-image-preview", label: "Gemini 3.1 Flash Image (Nano Banana 2) ⭐" },
-  { value: "custom", label: "Custom Model (enter below)" },
+  { value: "custom", label: "自定义模型（在下方输入）" },
   { value: "gemini-2.5-flash-image", label: "Gemini 2.5 Flash Image (Nano Banana)" },
   { value: "imagen-4.0-generate-001", label: "Imagen 4" },
   { value: "gemini-2.5-flash", label: "Gemini 2.5 Flash (text only)" },
@@ -55,30 +55,30 @@ export default function SetupPage() {
 
   return (
     <PageLayout
-      title="Setup"
-      description="Configure your AI model and settings"
+      title="设置"
+      description="配置你的 AI 模型和设置"
       currentStep="setup"
     >
       <div className="max-w-2xl mx-auto space-y-6">
         <Card>
           <CardHeader>
-            <CardTitle>API Configuration</CardTitle>
+            <CardTitle>API 配置</CardTitle>
             <CardDescription>
-              Enter your Google AI API key to start creating storybooks
+              输入你的 Google AI API 密钥以开始创作绘本
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="api-key">API Key</Label>
+              <Label htmlFor="api-key">API 密钥</Label>
               <Input
                 id="api-key"
                 type="password"
-                placeholder="Enter your Google AI API key"
+                placeholder="输入你的 Google AI API 密钥"
                 value={localApiKey}
                 onChange={(e) => setLocalApiKey(e.target.value)}
               />
               <p className="text-xs text-muted-foreground">
-                Get your API key from{" "}
+                从{" "}
                 <a
                   href="https://aistudio.google.com/app/apikey"
                   target="_blank"
@@ -87,11 +87,12 @@ export default function SetupPage() {
                 >
                   Google AI Studio
                 </a>
+                {" "}获取你的 API 密钥
               </p>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="model">Model</Label>
+              <Label htmlFor="model">模型</Label>
               <Select value={localModel} onValueChange={handleModelChange}>
                 <SelectTrigger>
                   <SelectValue />
@@ -108,31 +109,31 @@ export default function SetupPage() {
 
             {localModel === "custom" && (
               <div className="space-y-2">
-                <Label htmlFor="custom-model">Custom Model Name</Label>
+                <Label htmlFor="custom-model">自定义模型名称</Label>
                 <Input
                   id="custom-model"
-                  placeholder="e.g., gemini-2.0-flash-exp-image-generation"
+                  placeholder="例如：gemini-2.0-flash-exp-image-generation"
                   value={customModel}
                   onChange={(e) => setCustomModel(e.target.value)}
                 />
                 <p className="text-xs text-muted-foreground">
-                  Enter the exact model ID. Check{" "}
+                  输入准确的模型 ID。查看{" "}
                   <a
                     href="https://ai.google.dev/gemini-api/docs/models"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-primary hover:underline"
                   >
-                    available models
+                    可用模型
                   </a>
                 </p>
               </div>
             )}
 
             <div className="p-3 bg-muted rounded-lg text-sm text-muted-foreground">
-              <strong>Note:</strong> For image generation, use an image-capable model like{" "}
-              <code className="bg-background px-1 rounded">gemini-2.0-flash-exp</code> or similar.
-              Check the Gemini documentation for the latest image generation models.
+              <strong>提示：</strong>图片生成请使用支持图像的模型如{" "}
+              <code className="bg-background px-1 rounded">gemini-2.0-flash-exp</code> 或类似模型。
+              查看 Gemini 文档了解最新图像生成模型。
             </div>
           </CardContent>
         </Card>
@@ -140,12 +141,12 @@ export default function SetupPage() {
         <AgentConfigPanel
           config={localAgentConfig}
           onChange={setLocalAgentConfig}
-          title="Default Agent Settings"
+          title="默认 Agent 设置"
         />
 
         <div className="flex justify-end">
           <Button onClick={handleContinue} disabled={!canContinue}>
-            Continue to Characters
+            继续到角色
           </Button>
         </div>
       </div>

@@ -117,8 +117,8 @@ export default function PreviewPage() {
     <ProjectLayout
       projectId={projectId}
       projectTitle={projectTitle}
-      title="Preview"
-      description="Preview your completed storybook"
+      title="预览"
+      description="预览你完成的绘本"
       currentStep="preview"
     >
       <div className="max-w-4xl mx-auto space-y-6">
@@ -129,11 +129,11 @@ export default function PreviewPage() {
               <div className="flex gap-2">
                 <Button variant="outline" onClick={handleExportZip} disabled={storyboards.length === 0}>
                   <Download className="h-4 w-4 mr-2" />
-                  Export ZIP
+                  导出 ZIP
                 </Button>
                 <Button variant="outline" onClick={handleNewBook}>
                   <Home className="h-4 w-4 mr-2" />
-                  Dashboard
+                  仪表盘
                 </Button>
               </div>
             </div>
@@ -141,10 +141,10 @@ export default function PreviewPage() {
           <CardContent>
             {storyboards.length === 0 ? (
               <div className="text-center py-12 text-muted-foreground">
-                No pages to preview. Generate storyboards and images first.
+                没有可预览的页面。请先生成分镜和插画。
                 <div className="mt-4">
                   <Button onClick={() => router.push(`/projects/${projectId}/storyboard`)}>
-                    Go to Storyboard
+                    前往分镜设计
                   </Button>
                 </div>
               </div>
@@ -159,7 +159,7 @@ export default function PreviewPage() {
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center text-muted-foreground">
-                      Image not generated yet
+                      图片尚未生成
                     </div>
                   )}
                 </div>
@@ -178,11 +178,11 @@ export default function PreviewPage() {
                     disabled={!canGoPrev}
                   >
                     <ChevronLeft className="h-4 w-4 mr-2" />
-                    Previous
+                    上一页
                   </Button>
 
                   <div className="text-sm text-muted-foreground">
-                    Page {currentPage + 1} of {storyboards.length}
+                    第 {currentPage + 1} / {storyboards.length} 页
                   </div>
 
                   <Button
@@ -190,7 +190,7 @@ export default function PreviewPage() {
                     onClick={() => setCurrentPage((p) => p + 1)}
                     disabled={!canGoNext}
                   >
-                    Next
+                    下一页
                     <ChevronRight className="h-4 w-4 ml-2" />
                   </Button>
                 </div>
@@ -207,7 +207,7 @@ export default function PreviewPage() {
                           ? "bg-green-400 hover:bg-green-500"
                           : "bg-muted-foreground/30 hover:bg-muted-foreground/50"
                       }`}
-                      title={sb.image?.imageData ? "Generated" : "Not generated"}
+                      title={sb.image?.imageData ? "已生成" : "未生成"}
                     />
                   ))}
                 </div>
@@ -219,7 +219,7 @@ export default function PreviewPage() {
         <div className="flex justify-center">
           <Button variant="outline" onClick={() => router.push(`/projects/${projectId}/storyboard`)}>
             <ChevronLeft className="h-4 w-4 mr-2" />
-            Back to Storyboard
+            返回分镜
           </Button>
         </div>
       </div>

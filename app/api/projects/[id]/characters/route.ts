@@ -21,11 +21,7 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
       id: c.id,
       name: c.name,
       description: c.description,
-      colors: {
-        primary: c.primary_color,
-        secondary: c.secondary_color,
-      },
-      clothing: c.clothing,
+      styleDescription: c.style_description || undefined,
       expressions: JSON.parse(c.expressions || '[]'),
       referenceImage: c.reference_image || undefined,
       generatedImage: c.generated_image || undefined,
@@ -50,7 +46,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
     }
 
     const body = await request.json();
-    const { name, description, colors, clothing, expressions, referenceImage, generatedImage, agentConfig } = body as Omit<Character, 'id'>;
+    const { name, description, styleDescription, expressions, referenceImage, generatedImage, agentConfig } = body as Omit<Character, 'id'>;
 
     if (!name || typeof name !== 'string') {
       return NextResponse.json({ error: 'Name is required' }, { status: 400 });
@@ -62,9 +58,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
       project_id: projectId,
       name: name.trim(),
       description: description || '',
-      primary_color: colors?.primary || '#4A90D9',
-      secondary_color: colors?.secondary || '#F5A623',
-      clothing: clothing || '',
+      style_description: styleDescription || null,
       expressions: JSON.stringify(expressions || []),
       reference_image: referenceImage || null,
       generated_image: generatedImage || null,
@@ -78,11 +72,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
         id: charId,
         name: charData.name,
         description: charData.description,
-        colors: {
-          primary: charData.primary_color,
-          secondary: charData.secondary_color,
-        },
-        clothing: charData.clothing,
+        styleDescription: charData.style_description || undefined,
         expressions: expressions || [],
         referenceImage: referenceImage,
         generatedImage: generatedImage,
@@ -121,9 +111,7 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
         project_id: projectId,
         name: char.name,
         description: char.description || '',
-        primary_color: char.colors?.primary || '#4A90D9',
-        secondary_color: char.colors?.secondary || '#F5A623',
-        clothing: char.clothing || '',
+        style_description: char.styleDescription || null,
         expressions: JSON.stringify(char.expressions || []),
         reference_image: char.referenceImage || null,
         generated_image: char.generatedImage || null,

@@ -15,9 +15,9 @@ import type { Story, Storyboard, AgentConfig } from "@/types";
 import { Plus, Trash2, Edit2, ChevronDown, ChevronUp, Sparkles } from "lucide-react";
 
 const SHOT_TYPES = [
-  { value: "close-up", label: "Close-up" },
-  { value: "medium", label: "Medium Shot" },
-  { value: "wide", label: "Wide Shot" },
+  { value: "close-up", label: "特写" },
+  { value: "medium", label: "中景" },
+  { value: "wide", label: "全景" },
 ];
 
 function StoryboardEditor({
@@ -334,7 +334,7 @@ export default function StoryPage() {
             <AgentConfigPanel
               config={storyboardAgentConfig}
               onChange={setStoryboardAgentConfig}
-              title="Storyboard Agent Settings"
+              title="分镜 Agent 设置"
             />
           </CardContent>
         </Card>
@@ -362,10 +362,10 @@ export default function StoryPage() {
 
         <div className="flex justify-between">
           <Button variant="outline" onClick={() => router.push("/characters")}>
-            Back to Characters
+            返回角色
           </Button>
           <Button onClick={handleContinue} disabled={!canContinue}>
-            Continue to Generate
+            继续生成
           </Button>
         </div>
       </div>

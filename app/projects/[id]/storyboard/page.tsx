@@ -14,9 +14,9 @@ import type { AgentConfig, Storyboard, Character } from "@/types";
 import { Plus, Trash2, ChevronDown, ChevronUp, Sparkles, Image as ImageIcon, Loader2, Check, RefreshCw } from "lucide-react";
 
 const SHOT_TYPES = [
-  { value: "close-up", label: "Close-up" },
-  { value: "medium", label: "Medium Shot" },
-  { value: "wide", label: "Wide Shot" },
+  { value: "close-up", label: "特写" },
+  { value: "medium", label: "中景" },
+  { value: "wide", label: "全景" },
 ];
 
 interface StoryboardWithImage extends Storyboard {
@@ -54,7 +54,7 @@ function StoryboardCard({
               {storyboard.pageNumber}
             </span>
             <div className="flex-1 min-w-0">
-              <CardTitle className="text-base truncate">{storyboard.scene || "Untitled Scene"}</CardTitle>
+              <CardTitle className="text-base truncate">{storyboard.scene || "未命名场景"}</CardTitle>
               <CardDescription className="text-xs">
                 {storyboard.shotType} | {storyboard.mood}
               </CardDescription>
@@ -64,17 +64,17 @@ function StoryboardCard({
             {isComplete && (
               <span className="text-xs text-green-600 bg-green-50 px-2 py-0.5 rounded flex items-center gap-1">
                 <Check className="h-3 w-3" />
-                Generated
+                已生成
               </span>
             )}
             {storyboard.image?.status === "generating" && (
               <span className="text-xs text-blue-600 bg-blue-50 px-2 py-0.5 rounded flex items-center gap-1">
                 <Loader2 className="h-3 w-3 animate-spin" />
-                Generating
+                生成中
               </span>
             )}
             {storyboard.edited && !isComplete && (
-              <span className="text-xs text-amber-500 bg-amber-50 px-2 py-0.5 rounded">Edited</span>
+              <span className="text-xs text-amber-500 bg-amber-50 px-2 py-0.5 rounded">已编辑</span>
             )}
             <Button
               variant="outline"
@@ -90,12 +90,12 @@ function StoryboardCard({
               ) : hasImage ? (
                 <>
                   <RefreshCw className="h-4 w-4 mr-1" />
-                  Regenerate
+                  重新生成
                 </>
               ) : (
                 <>
                   <ImageIcon className="h-4 w-4 mr-1" />
-                  Generate
+                  生成图片
                 </>
               )}
             </Button>
@@ -127,34 +127,34 @@ function StoryboardCard({
           )}
 
           <div className="space-y-2">
-            <Label>Scene Title</Label>
+            <Label>场景标题</Label>
             <Input
               value={storyboard.scene}
               onChange={(e) => onUpdate(storyboard.id, { scene: e.target.value })}
-              placeholder="e.g., Pip discovers the messy tooth"
+              placeholder="例如：皮普发现了脏兮兮的牙齿"
             />
           </div>
           <div className="space-y-2">
-            <Label>Description</Label>
+            <Label>场景描述</Label>
             <Textarea
               value={storyboard.description}
               onChange={(e) => onUpdate(storyboard.id, { description: e.target.value })}
-              placeholder="Describe what happens in this scene..."
+              placeholder="描述这个场景中发生了什么..."
               rows={2}
             />
           </div>
           <div className="space-y-2">
-            <Label>Visual Prompt</Label>
+            <Label>视觉提示词</Label>
             <Textarea
               value={storyboard.visualPrompt}
               onChange={(e) => onUpdate(storyboard.id, { visualPrompt: e.target.value })}
-              placeholder="Detailed prompt for image generation..."
+              placeholder="用于图片生成的详细描述..."
               rows={3}
             />
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label>Shot Type</Label>
+              <Label>镜头类型</Label>
               <select
                 className="w-full border rounded-md p-2"
                 value={storyboard.shotType}
@@ -166,11 +166,11 @@ function StoryboardCard({
               </select>
             </div>
             <div className="space-y-2">
-              <Label>Mood</Label>
+              <Label>氛围</Label>
               <Input
                 value={storyboard.mood}
                 onChange={(e) => onUpdate(storyboard.id, { mood: e.target.value })}
-                placeholder="e.g., warm, tense, joyful"
+                placeholder="例如：温暖、紧张、欢乐"
               />
             </div>
           </div>
@@ -237,7 +237,7 @@ export default function StoryboardPage() {
 
   const generateStoryboard = useCallback(async () => {
     if (!storyContent) {
-      alert("Please create a story first");
+      alert("请先创建故事");
       return;
     }
 
@@ -249,7 +249,7 @@ export default function StoryboardPage() {
       const config = await configRes.json();
 
       if (!config.apiKey) {
-        alert("API key not configured. Please set it in Settings.");
+        alert("API 密钥未配置，请前往设置页面配置");
         return;
       }
 
@@ -287,11 +287,11 @@ export default function StoryboardPage() {
 
         fetchData();
       } else {
-        alert(data.error || "Failed to generate storyboards");
+        alert(data.error || "分镜生成失败");
       }
     } catch (error) {
       console.error("Failed to generate storyboard:", error);
-      alert("Failed to generate storyboards");
+      alert("分镜生成失败");
     } finally {
       setIsGeneratingStoryboard(false);
     }
@@ -333,7 +333,7 @@ export default function StoryboardPage() {
   };
 
   const handleDeleteStoryboard = async (id: string) => {
-    if (!confirm("Delete this storyboard?")) return;
+    if (!confirm("确定要删除这个分镜吗？")) return;
 
     // Note: In a real implementation, you'd have a DELETE endpoint for individual storyboards
     const updated = storyboards.filter(sb => sb.id !== id);
@@ -358,7 +358,7 @@ export default function StoryboardPage() {
       const config = await configRes.json();
 
       if (!config.apiKey) {
-        alert("API key not configured. Please set it in Settings.");
+        alert("API 密钥未配置，请前往设置页面配置");
         return;
       }
 
@@ -395,11 +395,11 @@ export default function StoryboardPage() {
         });
         fetchData();
       } else {
-        alert(data.error || "Failed to generate image");
+        alert(data.error || "图片生成失败");
       }
     } catch (error) {
       console.error("Failed to generate image:", error);
-      alert("Failed to generate image");
+      alert("图片生成失败");
     } finally {
       setGeneratingImageId(null);
     }
@@ -484,7 +484,7 @@ export default function StoryboardPage() {
             <AgentConfigPanel
               config={agentConfig}
               onChange={setAgentConfig}
-              title="Storyboard Agent Settings"
+              title="分镜 Agent 设置"
             />
           </CardContent>
         </Card>
@@ -505,7 +505,7 @@ export default function StoryboardPage() {
         ) : (
           <Card>
             <CardContent className="py-8 text-center text-muted-foreground">
-              No storyboards yet. Click &quot;Auto-generate&quot; to create them from your story, or add manually.
+              还没有分镜。点击"自动生成"从故事中创建，或手动添加。
             </CardContent>
           </Card>
         )}

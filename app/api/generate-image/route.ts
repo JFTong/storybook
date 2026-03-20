@@ -1,27 +1,42 @@
 import { NextRequest, NextResponse } from "next/server";
-
-const IMAGE_STYLE_PREFIX = `Illustration style: Warm, hand-drawn cartoon style for children's picture books. Soft rounded shapes, bright cheerful colors, expressive characters. Similar to classic children's book illustrations with ink outlines and watercolor-like fills. Kid-friendly, non-scary, inviting atmosphere.
-
-`;
+import { buildEnhancedPrompt } from "@/lib/prompts/style-templates";
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { apiKey, model, prompt, sceneDescription, characterRefImage, previousImage } = body;
+    const { 
+      apiKey, 
+      model, 
+      sceneDescription, 
+      visualPrompt,
+      shotType = 'medium',
+      mood = '',
+      characterRefImage, 
+      previousImage,
+      config = {}
+    } = body;
 
-    if (!apiKey || !prompt) {
+    if (!apiKey || !visualPrompt) {
       return NextResponse.json(
-        { error: "API key and prompt are required" },
+        { error: "API key and visual prompt are required" },
         { status: 400 }
       );
     }
 
-    const fullPrompt = IMAGE_STYLE_PREFIX + prompt + (sceneDescription ? `\n\nScene: ${sceneDescription}` : "");
+    // 使用增强的 Prompt 构建系统
+    const fullPrompt = buildEnhancedPrompt({
+      sceneDescription: sceneDescription || '',
+      visualPrompt,
+      shotType,
+      mood,
+      hasCharacterRef: !!characterRefImage,
+      hasPreviousPage: !!previousImage,
+    });
 
     // Build the parts array for the API request
     const parts: { inlineData?: { mimeType: string; data: string }; text?: string }[] = [];
 
-    // Add character reference image if available
+    // Add character reference image if available (最优先)
     if (characterRefImage) {
       parts.push({
         inlineData: {
@@ -44,6 +59,22 @@ export async function POST(request: NextRequest) {
     // Add the text prompt
     parts.push({ text: fullPrompt });
 
+    // 构建生成配置
+    const generationConfig: any = {
+      responseModalities: ["image", "text"],
+    };
+
+    // 支持自定义配置参数
+    if (config.temperature !== undefined) {
+      generationConfig.temperature = config.temperature;
+    }
+    if (config.topP !== undefined) {
+      generationConfig.topP = config.topP;
+    }
+    if (config.seed !== undefined) {
+      generationConfig.seed = config.seed;
+    }
+
     // Use v1beta API for image generation with Gemini models
     const response = await fetch(
       `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`,
@@ -55,9 +86,7 @@ export async function POST(request: NextRequest) {
         },
         body: JSON.stringify({
           contents: [{ parts }],
-          generationConfig: {
-            responseModalities: ["image", "text"],
-          },
+          generationConfig,
         }),
       }
     );
@@ -65,6 +94,7 @@ export async function POST(request: NextRequest) {
     if (!response.ok) {
       const error = await response.json();
       const errorMsg = error.error?.message || "Failed to generate image";
+      console.error("Gemini API error:", error);
       return NextResponse.json({ error: errorMsg }, { status: response.status });
     }
 
@@ -88,14 +118,17 @@ export async function POST(request: NextRequest) {
     );
 
     if (textPart?.text) {
+      console.error("Model returned text instead of image:", textPart.text);
       return NextResponse.json({
-        error: "Model returned text instead of image. Use an image-capable model like gemini-2.5-flash-image.",
+        error: "模型返回了文本而非图片，请使用支持图片生成的模型（如 gemini-2.5-flash-image）",
       }, { status: 400 });
     }
 
-    return NextResponse.json({ error: "No image generated" }, { status: 500 });
+    return NextResponse.json({ error: "未生成图片" }, { status: 500 });
   } catch (error) {
     console.error("Image generation error:", error);
-    return NextResponse.json({ error: "Failed to generate image" }, { status: 500 });
+    return NextResponse.json({ 
+      error: error instanceof Error ? error.message : "图片生成失败" 
+    }, { status: 500 });
   }
 }

@@ -57,9 +57,7 @@ export interface Character {
   project_id: string;
   name: string;
   description: string;
-  primary_color: string;
-  secondary_color: string;
-  clothing: string;
+  style_description: string | null;
   expressions: string; // JSON
   reference_image: string | null;
   generated_image: string | null;
@@ -216,12 +214,12 @@ export const charactersOps = {
   create: (char: Omit<Character, 'created_at' | 'updated_at'>): Character => {
     const now = new Date().toISOString();
     const stmt = db.prepare(`
-      INSERT INTO characters (id, project_id, name, description, primary_color, secondary_color, clothing, expressions, reference_image, generated_image, agent_config, created_at, updated_at)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      INSERT INTO characters (id, project_id, name, description, style_description, expressions, reference_image, generated_image, agent_config, created_at, updated_at)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `);
     stmt.run(
       char.id, char.project_id, char.name, char.description,
-      char.primary_color, char.secondary_color, char.clothing,
+      char.style_description,
       char.expressions, char.reference_image, char.generated_image,
       char.agent_config, now, now
     );
@@ -238,9 +236,7 @@ export const charactersOps = {
 
     if (updates.name !== undefined) { fields.push('name = ?'); values.push(updates.name); }
     if (updates.description !== undefined) { fields.push('description = ?'); values.push(updates.description); }
-    if (updates.primary_color !== undefined) { fields.push('primary_color = ?'); values.push(updates.primary_color); }
-    if (updates.secondary_color !== undefined) { fields.push('secondary_color = ?'); values.push(updates.secondary_color); }
-    if (updates.clothing !== undefined) { fields.push('clothing = ?'); values.push(updates.clothing); }
+    if (updates.style_description !== undefined) { fields.push('style_description = ?'); values.push(updates.style_description); }
     if (updates.expressions !== undefined) { fields.push('expressions = ?'); values.push(updates.expressions); }
     if (updates.reference_image !== undefined) { fields.push('reference_image = ?'); values.push(updates.reference_image); }
     if (updates.generated_image !== undefined) { fields.push('generated_image = ?'); values.push(updates.generated_image); }

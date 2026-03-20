@@ -68,7 +68,7 @@ export default function StoryPage() {
       const config = await configRes.json();
 
       if (!config.apiKey) {
-        alert("API key not configured. Please set it in Settings.");
+        alert("API 密钥未配置，请前往设置页面配置");
         return;
       }
 
@@ -88,11 +88,11 @@ export default function StoryPage() {
       if (data.story) {
         setStoryContent(data.story);
       } else {
-        alert(data.error || "Failed to generate story");
+        alert(data.error || "故事生成失败");
       }
     } catch (error) {
       console.error("Failed to generate story:", error);
-      alert("Failed to generate story");
+      alert("故事生成失败");
     } finally {
       setIsGenerating(false);
     }
@@ -132,23 +132,23 @@ export default function StoryPage() {
     <ProjectLayout
       projectId={projectId}
       projectTitle={projectTitle}
-      title="Story"
-      description="Write or generate your story content"
+      title="故事编写"
+      description="编写或生成你的故事内容"
       currentStep="story"
     >
       <div className="max-w-4xl mx-auto space-y-6">
         <Card>
           <CardHeader>
-            <CardTitle>Story Theme</CardTitle>
-            <CardDescription>What is your story about?</CardDescription>
+            <CardTitle>故事主题</CardTitle>
+            <CardDescription>你的故事讲述什么内容？</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="theme">Theme</Label>
+              <Label htmlFor="theme">主题</Label>
               <div className="flex gap-2">
                 <Input
                   id="theme"
-                  placeholder="e.g., A rabbit learns the importance of brushing teeth"
+                  placeholder="例如：小兔子学习刷牙的重要性"
                   value={theme}
                   onChange={(e) => setTheme(e.target.value)}
                   className="flex-1"
@@ -159,7 +159,7 @@ export default function StoryPage() {
                   ) : (
                     <>
                       <Sparkles className="h-4 w-4 mr-2" />
-                      Generate
+                      生成
                     </>
                   )}
                 </Button>
@@ -169,25 +169,25 @@ export default function StoryPage() {
             <AgentConfigPanel
               config={agentConfig}
               onChange={setAgentConfig}
-              title="Story Agent Settings"
+              title="故事 Agent 设置"
             />
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader>
-            <CardTitle>Story Content</CardTitle>
-            <CardDescription>Write or generate your story content</CardDescription>
+            <CardTitle>故事内容</CardTitle>
+            <CardDescription>编写或生成你的故事文本</CardDescription>
           </CardHeader>
           <CardContent>
             <Textarea
               value={storyContent}
               onChange={(e) => setStoryContent(e.target.value)}
-              placeholder="Once upon a time..."
+              placeholder="很久很久以前..."
               rows={12}
             />
             <p className="text-xs text-muted-foreground mt-2">
-              Tip: Write a complete story with clear scene breaks. Each scene will become a page in your book.
+              提示：编写完整的故事并明确场景切换。每个场景将生成绘本中的一页。
             </p>
           </CardContent>
         </Card>
@@ -197,10 +197,10 @@ export default function StoryPage() {
             {saving ? (
               <>
                 <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                Saving...
+                保存中...
               </>
             ) : (
-              "Continue to Storyboard"
+              "继续设计分镜"
             )}
           </Button>
         </div>

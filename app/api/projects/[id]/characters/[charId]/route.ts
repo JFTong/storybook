@@ -21,11 +21,7 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
         id: character.id,
         name: character.name,
         description: character.description,
-        colors: {
-          primary: character.primary_color,
-          secondary: character.secondary_color,
-        },
-        clothing: character.clothing,
+        styleDescription: character.style_description || undefined,
         expressions: JSON.parse(character.expressions || '[]'),
         referenceImage: character.reference_image || undefined,
         generatedImage: character.generated_image || undefined,
@@ -53,9 +49,7 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
 
     if (body.name !== undefined) updates.name = body.name;
     if (body.description !== undefined) updates.description = body.description;
-    if (body.colors?.primary !== undefined) updates.primary_color = body.colors.primary;
-    if (body.colors?.secondary !== undefined) updates.secondary_color = body.colors.secondary;
-    if (body.clothing !== undefined) updates.clothing = body.clothing;
+    if (body.styleDescription !== undefined) updates.style_description = body.styleDescription;
     if (body.expressions !== undefined) updates.expressions = JSON.stringify(body.expressions);
     if (body.referenceImage !== undefined) updates.reference_image = body.referenceImage;
     if (body.generatedImage !== undefined) updates.generated_image = body.generatedImage;
@@ -68,11 +62,7 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
         id: updated!.id,
         name: updated!.name,
         description: updated!.description,
-        colors: {
-          primary: updated!.primary_color,
-          secondary: updated!.secondary_color,
-        },
-        clothing: updated!.clothing,
+        styleDescription: updated!.style_description || undefined,
         expressions: JSON.parse(updated!.expressions || '[]'),
         referenceImage: updated!.reference_image || undefined,
         generatedImage: updated!.generated_image || undefined,

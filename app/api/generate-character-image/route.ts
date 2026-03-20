@@ -1,37 +1,37 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const CHARACTER_IMAGE_PROMPT = `Generate an image of a character for a children's picture book.
+const CHARACTER_IMAGE_PROMPT = `为儿童绘本生成一个角色形象图片。
 
-Character: {name}
-Description: {description}
-Colors: Primary {primaryColor}, Secondary {secondaryColor}
-Clothing: {clothing}
+角色名称：{name}
+角色描述：{description}
+{styleDescriptionLine}
 
-Style requirements:
-- Warm, hand-drawn cartoon style
-- Soft rounded shapes, bright cheerful colors
-- Kid-friendly, non-scary
-- Simple or white background
-- Single character in a friendly pose
+风格要求：
+- 温暖的手绘卡通风格
+- 柔和圆润的造型，明亮温馨的色彩
+- 适合儿童的可爱风格，不恐怖
+- 简洁或白色背景
+- 单个角色，友好的姿态
+- 人物特征必须严格参照参考图（如有提供）
 
-Generate the image now.`;
+请立即生成图片。`;
 
-const CHARACTER_IMAGE_WITH_REF_PROMPT = `Generate an image of a character for a children's picture book, using the provided reference image as a guide for the character's appearance.
+const CHARACTER_IMAGE_WITH_REF_PROMPT = `为儿童绘本生成一个角色形象图片，请严格参照提供的参考图来绘制角色的外观特征。
 
-Character: {name}
-Description: {description}
-Colors: Primary {primaryColor}, Secondary {secondaryColor}
-Clothing: {clothing}
+角色名称：{name}
+角色描述：{description}
+{styleDescriptionLine}
 
-Style requirements:
-- Warm, hand-drawn cartoon style
-- Soft rounded shapes, bright cheerful colors
-- Kid-friendly, non-scary
-- Simple or white background
-- Single character in a friendly pose
-- Maintain consistency with the reference image's character design
+风格要求：
+- 温暖的手绘卡通风格
+- 柔和圆润的造型，明亮温馨的色彩
+- 适合儿童的可爱风格，不恐怖
+- 简洁或白色背景
+- 单个角色，友好的姿态
+- 人物特征必须严格参照参考图
+- 保持与参考图角色设计的一致性
 
-Generate the image now.`;
+请立即生成图片。`;
 
 export async function POST(request: NextRequest) {
   try {
@@ -40,25 +40,26 @@ export async function POST(request: NextRequest) {
 
     if (!apiKey || !character) {
       return NextResponse.json(
-        { error: "API key and character data are required" },
+        { error: "需要提供 API Key 和角色数据" },
         { status: 400 }
       );
     }
 
+    const styleDescriptionLine = character.styleDescription
+      ? `风格描述：${character.styleDescription}`
+      : '';
+
     const promptTemplate = referenceImage ? CHARACTER_IMAGE_WITH_REF_PROMPT : CHARACTER_IMAGE_PROMPT;
     const prompt = promptTemplate
-      .replace("{name}", character.name || "Character")
+      .replace("{name}", character.name || "角色")
       .replace("{description}", character.description || "")
-      .replace("{primaryColor}", character.colors?.primary || "#8E8E8E")
-      .replace("{secondaryColor}", character.colors?.secondary || "#F2B5B5")
-      .replace("{clothing}", character.clothing || "casual clothes");
+      .replace("{styleDescriptionLine}", styleDescriptionLine);
 
     // Build the parts array
     const parts: Array<{ text: string } | { inlineData: { mimeType: string; data: string } }> = [];
 
     // Add reference image first if provided
     if (referenceImage) {
-      // Extract base64 data (remove data:image/xxx;base64, prefix if present)
       const base64Data = referenceImage.includes(",") ? referenceImage.split(",")[1] : referenceImage;
       parts.push({
         inlineData: {
@@ -91,7 +92,7 @@ export async function POST(request: NextRequest) {
 
     if (!response.ok) {
       const error = await response.json();
-      const errorMsg = error.error?.message || "Failed to generate character image";
+      const errorMsg = error.error?.message || "角色图片生成失败";
       return NextResponse.json({ error: errorMsg }, { status: response.status });
     }
 
@@ -116,13 +117,13 @@ export async function POST(request: NextRequest) {
 
     if (textPart?.text) {
       return NextResponse.json({
-        error: "Model returned text instead of image. Make sure you're using an image-capable model like gemini-2.5-flash-image.",
+        error: "模型返回了文本而非图片。请确保使用支持图片生成的模型（如 gemini-2.0-flash-exp）。",
       }, { status: 400 });
     }
 
-    return NextResponse.json({ error: "No image generated" }, { status: 500 });
+    return NextResponse.json({ error: "未能生成图片" }, { status: 500 });
   } catch (error) {
-    console.error("Character image generation error:", error);
-    return NextResponse.json({ error: "Failed to generate character image" }, { status: 500 });
+    console.error("角色图片生成错误:", error);
+    return NextResponse.json({ error: "角色图片生成失败" }, { status: 500 });
   }
 }

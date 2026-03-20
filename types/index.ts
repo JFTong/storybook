@@ -11,11 +11,7 @@ export interface Character {
   id: string;
   name: string;
   description: string;
-  colors: {
-    primary: string;
-    secondary: string;
-  };
-  clothing: string;
+  styleDescription?: string; // 可选的风格描述
   expressions: string[];
   referenceImage?: string; // base64
   generatedImage?: string; // base64
@@ -103,9 +99,7 @@ export interface CharacterDB {
   projectId: string;
   name: string;
   description: string;
-  primaryColor: string;
-  secondaryColor: string;
-  clothing: string;
+  styleDescription?: string;
   expressions: string[]; // JSON parsed
   referenceImage?: string;
   generatedImage?: string;
@@ -188,21 +182,21 @@ export interface ProjectWithRelations {
 export type PipelineStep = 'setup' | 'characters' | 'story' | 'generate' | 'preview';
 
 export const PIPELINE_STEPS: { id: PipelineStep; label: string; path: string }[] = [
-  { id: 'setup', label: 'Setup', path: '/setup' },
-  { id: 'characters', label: 'Characters', path: '/characters' },
-  { id: 'story', label: 'Story', path: '/story' },
-  { id: 'generate', label: 'Generate', path: '/generate' },
-  { id: 'preview', label: 'Preview', path: '/preview' },
+  { id: 'setup', label: '设置', path: '/setup' },
+  { id: 'characters', label: '角色', path: '/characters' },
+  { id: 'story', label: '故事', path: '/story' },
+  { id: 'generate', label: '生成', path: '/generate' },
+  { id: 'preview', label: '预览', path: '/preview' },
 ];
 
 // New Project Steps
 export type ProjectStep = 'characters' | 'story' | 'storyboard' | 'preview';
 
 export const PROJECT_STEPS: { id: ProjectStep; label: string; path: (projectId: string) => string }[] = [
-  { id: 'characters', label: 'Characters', path: (id) => `/projects/${id}/characters` },
-  { id: 'story', label: 'Story', path: (id) => `/projects/${id}/story` },
-  { id: 'storyboard', label: 'Storyboard', path: (id) => `/projects/${id}/storyboard` },
-  { id: 'preview', label: 'Preview', path: (id) => `/projects/${id}/preview` },
+  { id: 'characters', label: '角色定义', path: (id) => `/projects/${id}/characters` },
+  { id: 'story', label: '故事编写', path: (id) => `/projects/${id}/story` },
+  { id: 'storyboard', label: '分镜设计', path: (id) => `/projects/${id}/storyboard` },
+  { id: 'preview', label: '预览导出', path: (id) => `/projects/${id}/preview` },
 ];
 
 // API Response Types
@@ -219,9 +213,7 @@ export function characterToDB(char: Character, projectId: string): Omit<Characte
     projectId,
     name: char.name,
     description: char.description,
-    primaryColor: char.colors.primary,
-    secondaryColor: char.colors.secondary,
-    clothing: char.clothing,
+    styleDescription: char.styleDescription,
     expressions: char.expressions,
     referenceImage: char.referenceImage,
     generatedImage: char.generatedImage,
@@ -234,11 +226,7 @@ export function characterFromDB(db: CharacterDB): Character {
     id: db.id,
     name: db.name,
     description: db.description,
-    colors: {
-      primary: db.primaryColor,
-      secondary: db.secondaryColor,
-    },
-    clothing: db.clothing,
+    styleDescription: db.styleDescription,
     expressions: db.expressions,
     referenceImage: db.referenceImage,
     generatedImage: db.generatedImage,

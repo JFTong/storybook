@@ -24,9 +24,7 @@ CREATE TABLE IF NOT EXISTS characters (
   project_id TEXT NOT NULL,
   name TEXT NOT NULL,
   description TEXT,
-  primary_color TEXT DEFAULT '#4A90D9',
-  secondary_color TEXT DEFAULT '#F5A623',
-  clothing TEXT,
+  style_description TEXT, -- 风格描述（可选）
   expressions TEXT, -- JSON array
   reference_image TEXT, -- base64
   generated_image TEXT, -- base64

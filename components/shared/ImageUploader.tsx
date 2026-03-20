@@ -83,7 +83,7 @@ export function ImageUploader({
   const handleFile = useCallback(
     async (file: File) => {
       if (!file.type.startsWith("image/")) {
-        alert("Please upload an image file");
+        alert("请上传图片文件");
         return;
       }
 
@@ -93,7 +93,7 @@ export function ImageUploader({
         onChange(base64);
       } catch (error) {
         console.error("Error processing image:", error);
-        alert("Failed to process image");
+        alert("图片处理失败");
       } finally {
         setIsProcessing(false);
       }
@@ -171,7 +171,7 @@ export function ImageUploader({
           {isProcessing ? (
             <div className="flex flex-col items-center gap-2">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
-              <p className="text-sm text-muted-foreground">Processing...</p>
+              <p className="text-sm text-muted-foreground">处理中...</p>
             </div>
           ) : (
             <div className="flex flex-col items-center gap-2">
@@ -180,10 +180,10 @@ export function ImageUploader({
                 <ImageIcon className="h-8 w-8 text-muted-foreground" />
               </div>
               <p className="text-sm text-muted-foreground">
-                Drag & drop an image or click to upload
+                拖拽图片到此处或点击上传
               </p>
               <p className="text-xs text-muted-foreground">
-                Max {maxSizeKB}KB, will be resized to {maxDimension}px
+                最大 {maxSizeKB}KB，将自动缩放至 {maxDimension}px
               </p>
             </div>
           )}

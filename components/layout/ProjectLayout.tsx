@@ -36,7 +36,7 @@ export function ProjectLayout({
               className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
             >
               <ArrowLeft className="h-4 w-4" />
-              <span>Dashboard</span>
+              <span>仪表盘</span>
             </Link>
             {projectTitle && (
               <>
@@ -50,7 +50,7 @@ export function ProjectLayout({
             className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
           >
             <Settings className="h-4 w-4" />
-            <span className="hidden sm:inline">Settings</span>
+            <span className="hidden sm:inline">设置</span>
           </Link>
         </div>
       </header>

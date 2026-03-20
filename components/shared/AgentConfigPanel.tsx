@@ -27,30 +27,30 @@ interface AgentConfigPanelProps {
 const AGENT_TYPES: { value: AgentType; label: string; description: string }[] = [
   {
     value: "creative",
-    label: "Creative",
-    description: "More imaginative and varied outputs",
+    label: "创意型",
+    description: "更具想象力和多样性的输出",
   },
   {
     value: "detailed",
-    label: "Detailed",
-    description: "Thorough and comprehensive outputs",
+    label: "详细型",
+    description: "全面细致的输出",
   },
   {
     value: "minimal",
-    label: "Minimal",
-    description: "Concise and focused outputs",
+    label: "精简型",
+    description: "简洁聚焦的输出",
   },
   {
     value: "custom",
-    label: "Custom",
-    description: "Define your own prompt",
+    label: "自定义",
+    description: "定义你自己的提示词",
   },
 ];
 
 export function AgentConfigPanel({
   config,
   onChange,
-  title = "Agent Settings",
+  title = "Agent 设置",
 }: AgentConfigPanelProps) {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -88,7 +88,7 @@ export function AgentConfigPanel({
         <AccordionContent>
           <div className="space-y-4 pt-2">
             <div className="space-y-2">
-              <Label>Agent Type</Label>
+              <Label>Agent 类型</Label>
               <Select value={config.type} onValueChange={handleTypeChange}>
                 <SelectTrigger>
                   <SelectValue />
@@ -110,9 +110,9 @@ export function AgentConfigPanel({
 
             {config.type === "custom" && (
               <div className="space-y-2">
-                <Label>Custom Prompt</Label>
+                <Label>自定义提示词</Label>
                 <Textarea
-                  placeholder="Enter your custom prompt instructions..."
+                  placeholder="输入你的自定义提示词..."
                   value={config.customPrompt || ""}
                   onChange={(e) => handleCustomPromptChange(e.target.value)}
                   rows={4}

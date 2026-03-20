@@ -38,3 +38,5 @@ next-env.d.ts
 
 # database
 data/
+# CodeBuddy
+.codebuddy/

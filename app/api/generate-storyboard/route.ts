@@ -45,10 +45,9 @@ export async function POST(request: NextRequest) {
     }
 
     const characterDescriptions = characters
-      ?.map((c: { name: string; description: string; colors: { primary: string; secondary: string }; clothing: string }) => {
+      ?.map((c: { name: string; description: string; styleDescription?: string }) => {
         let desc = `- ${c.name}: ${c.description}`;
-        if (c.colors) desc += `, primary color: ${c.colors.primary}`;
-        if (c.clothing) desc += `, wearing: ${c.clothing}`;
+        if (c.styleDescription) desc += `, 风格: ${c.styleDescription}`;
         return desc;
       })
       .join("\n") || "No specific characters defined.";

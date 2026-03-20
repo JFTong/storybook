@@ -81,7 +81,7 @@ function PageCard({
           />
         )}
         {page.retryCount > 0 && page.status !== "completed" && (
-          <p className="text-xs text-muted-foreground mt-2">Retry count: {page.retryCount}</p>
+          <p className="text-xs text-muted-foreground mt-2">重试次数: {page.retryCount}</p>
         )}
       </CardContent>
     </Card>
@@ -261,7 +261,7 @@ export default function GeneratePage() {
           {storedPages.length > 0 && (
             <Button variant="outline" onClick={initializePages}>
               <RotateCcw className="h-4 w-4 mr-2" />
-              Reset
+              重置
             </Button>
           )}
         </div>

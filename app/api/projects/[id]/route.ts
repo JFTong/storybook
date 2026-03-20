@@ -26,11 +26,7 @@ function getFullProject(projectId: string) {
     id: c.id,
     name: c.name,
     description: c.description,
-    colors: {
-      primary: c.primary_color,
-      secondary: c.secondary_color,
-    },
-    clothing: c.clothing,
+    styleDescription: c.style_description || undefined,
     expressions: parseJsonField<string[]>(c.expressions, []),
     referenceImage: c.reference_image || undefined,
     generatedImage: c.generated_image || undefined,

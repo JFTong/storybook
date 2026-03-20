@@ -24,7 +24,7 @@ export default function PreviewPage() {
     () => currentProject?.story?.storyboards || [],
     [currentProject?.story?.storyboards]
   );
-  const title = currentProject?.title || "My Storybook";
+  const title = currentProject?.title || "我的绘本";
 
   // Combine storyboards with generated images
   const bookPages = storyboards.map((sb, index) => ({
@@ -75,8 +75,8 @@ export default function PreviewPage() {
 
   return (
     <PageLayout
-      title="Preview"
-      description="Preview your completed storybook"
+      title="预览"
+      description="预览你完成的绘本"
       currentStep="preview"
       showNav={false}
     >
@@ -88,11 +88,11 @@ export default function PreviewPage() {
               <div className="flex gap-2">
                 <Button variant="outline" onClick={handleExportZip}>
                   <Download className="h-4 w-4 mr-2" />
-                  Export ZIP
+                  导出 ZIP
                 </Button>
                 <Button variant="outline" onClick={handleNewBook}>
                   <BookOpen className="h-4 w-4 mr-2" />
-                  New Book
+                  新绘本
                 </Button>
               </div>
             </div>
@@ -100,7 +100,7 @@ export default function PreviewPage() {
           <CardContent>
             {bookPages.length === 0 ? (
               <div className="text-center py-12 text-muted-foreground">
-                No pages to preview. Complete the generation step first.
+                没有可预览的页面。请先完成生成步骤。
               </div>
             ) : (
               <>
@@ -108,12 +108,12 @@ export default function PreviewPage() {
                   {currentBookPage?.page?.imageUrl ? (
                     <img
                       src={`data:image/jpeg;base64,${currentBookPage.page.imageUrl}`}
-                      alt={`Page ${currentPage + 1}`}
+                      alt={`第 ${currentPage + 1} 页`}
                       className="w-full h-full object-contain"
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center text-muted-foreground">
-                      Image not available
+                      图片不可用
                     </div>
                   )}
                 </div>
@@ -132,11 +132,11 @@ export default function PreviewPage() {
                     disabled={!canGoPrev}
                   >
                     <ChevronLeft className="h-4 w-4 mr-2" />
-                    Previous
+                    上一页
                   </Button>
 
                   <div className="text-sm text-muted-foreground">
-                    Page {currentPage + 1} of {bookPages.length}
+                    第 {currentPage + 1} / {bookPages.length} 页
                   </div>
 
                   <Button
@@ -144,7 +144,7 @@ export default function PreviewPage() {
                     onClick={() => setCurrentPage((p) => p + 1)}
                     disabled={!canGoNext}
                   >
-                    Next
+                    下一页
                     <ChevronRight className="h-4 w-4 ml-2" />
                   </Button>
                 </div>
@@ -170,7 +170,7 @@ export default function PreviewPage() {
         <div className="flex justify-center">
           <Button variant="outline" onClick={() => router.push("/generate")}>
             <ChevronLeft className="h-4 w-4 mr-2" />
-            Back to Generate
+            返回生成
           </Button>
         </div>
       </div>

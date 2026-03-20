@@ -23,7 +23,7 @@ const PRESET_MODELS = [
   { value: "gemini-3-pro-image-preview", label: "Gemini 3 Pro Image Preview (Banana Pro)" },
   { value: "gemini-2.5-flash-preview-05-20", label: "Gemini 2.5 Flash Preview (text only)" },
   { value: "gemini-2.0-flash", label: "Gemini 2.0 Flash (text only)" },
-  { value: "custom", label: "Custom Model (enter below)" },
+  { value: "custom", label: "自定义模型（在下方输入）" },
 ];
 
 export default function ConfigPage() {
@@ -211,7 +211,7 @@ export default function ConfigPage() {
               )}
 
               <div className="p-3 bg-muted rounded-lg text-sm text-muted-foreground">
-                <strong>Note:</strong> For image generation, use Gemini image models (Banana). For story generation, any Gemini text model works.
+                <strong>提示：</strong>图片生成请使用 Gemini 图像模型（Banana）。故事生成可使用任意 Gemini 文本模型。
               </div>
             </CardContent>
           </Card>
@@ -219,17 +219,17 @@ export default function ConfigPage() {
           {/* Feishu Configuration */}
           <Card>
             <CardHeader>
-              <CardTitle>Feishu Integration</CardTitle>
+              <CardTitle>飞书集成</CardTitle>
               <CardDescription>
-                Connect to Feishu for document synchronization (optional)
+                连接飞书以同步文档（可选）
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="font-medium">Enable Feishu Sync</p>
+                  <p className="font-medium">启用飞书同步</p>
                   <p className="text-sm text-muted-foreground">
-                    Sync your storybooks to Feishu documents
+                    将绘本同步到飞书文档
                   </p>
                 </div>
                 <Button
@@ -237,7 +237,7 @@ export default function ConfigPage() {
                   size="sm"
                   onClick={() => setFeishuEnabled(!feishuEnabled)}
                 >
-                  {feishuEnabled ? "Enabled" : "Disabled"}
+                  {feishuEnabled ? "已启用" : "未启用"}
                 </Button>
               </div>
 
@@ -284,21 +284,21 @@ export default function ConfigPage() {
           {/* Save button */}
           <div className="flex justify-end gap-4">
             <Button variant="outline" onClick={() => router.push("/")}>
-              Cancel
+              取消
             </Button>
             <Button onClick={handleSave} disabled={!canSave || saving}>
               {saving ? (
                 <>
                   <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                  Saving...
+                  保存中...
                 </>
               ) : saved ? (
                 <>
                   <Check className="h-4 w-4 mr-2" />
-                  Saved!
+                  已保存！
                 </>
               ) : (
-                "Save Settings"
+                "保存设置"
               )}
             </Button>
           </div>
